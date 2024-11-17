@@ -26,7 +26,11 @@ class Headers:
         platform = self.__platform()
         browser = self.__browser()
 
-        headers = {"Accept": "*/*", "Connection": "keep-alive", "User-Agent": browser.replace("%PLAT%", platform)}
+        headers = {
+            "Accept": "*/*",
+            "Connection": "keep-alive",
+            "User-Agent": browser.replace("%PLAT%", platform),
+        }
 
         headers.update(self.__headers())
 

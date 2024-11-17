@@ -214,13 +214,19 @@ def firefox() -> str:
 
 
 def chrome() -> str:
-    main = "Mozilla/5.0 (%PLAT%) AppleWebKit/537.36 (KHTML," + " like Gecko) Chrome/%VER% Safari/537.36"
+    main = (
+        "Mozilla/5.0 (%PLAT%) AppleWebKit/537.36 (KHTML,"
+        + " like Gecko) Chrome/%VER% Safari/537.36"
+    )
 
     return main.replace("%VER%", chrome_ver[rint(0, len(chrome_ver) - 1)])
 
 
 def opera() -> str:
-    main = "Mozilla/5.0 (%PLAT%) AppleWebKit/537.36 (KHTML, like Gecko) " + "Chrome/%CVER% Safari/537.36 OPR/%OVER%"
+    main = (
+        "Mozilla/5.0 (%PLAT%) AppleWebKit/537.36 (KHTML, like Gecko) "
+        + "Chrome/%CVER% Safari/537.36 OPR/%OVER%"
+    )
 
     ver = [
         "67.0.3575.130",
