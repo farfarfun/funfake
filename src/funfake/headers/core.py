@@ -35,3 +35,10 @@ class Headers:
         headers.update(self.__headers())
 
         return headers
+
+
+__headers = Headers()
+
+
+def fake_header() -> dict:
+    return __headers.generate()

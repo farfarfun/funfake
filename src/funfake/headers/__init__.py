@@ -1,3 +1,3 @@
-from .core import Headers
+from .core import Headers, fake_header
 
-__all__ = ["Headers"]
+__all__ = ["Headers", "fake_header"]
