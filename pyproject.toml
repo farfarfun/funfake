@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "funfake"
-version = "1.0.8"
+version = "1.0.9"
 description = "A lightweight Python library for generating realistic HTTP headers to simulate various browsers and operating systems"
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 dependencies = []
 keywords = [ "http", "headers", "user-agent", "fake", "browser", "crawler", "requests",]
 classifiers = [ "Development Status :: 5 - Production/Stable", "Intended Audience :: Developers", "License :: OSI Approved :: MIT License", "Operating System :: OS Independent", "Programming Language :: Python :: 3", "Programming Language :: Python :: 3.6", "Programming Language :: Python :: 3.7", "Programming Language :: Python :: 3.8", "Programming Language :: Python :: 3.9", "Programming Language :: Python :: 3.10", "Programming Language :: Python :: 3.11", "Programming Language :: Python :: 3.12", "Topic :: Internet :: WWW/HTTP", "Topic :: Software Development :: Libraries :: Python Modules", "Topic :: Software Development :: Testing",]
@@ -41,12 +41,6 @@ test = [ "pytest>=6.0", "pytest-cov>=2.0", "requests>=2.20.0",]
 
 [tool.setuptools]
 license-files = []
-
-[tool.black]
-line-length = 88
-target-version = [ "py36",]
-include = "\\.pyi?$"
-extend-exclude = "/(\n  # directories\n  \\.eggs\n  | \\.git\n  | \\.hg\n  | \\.mypy_cache\n  | \\.tox\n  | \\.venv\n  | build\n  | dist\n)/\n"
 
 [tool.mypy]
 python_version = "3.6"
