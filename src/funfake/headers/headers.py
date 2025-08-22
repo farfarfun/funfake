@@ -3,28 +3,26 @@ from random import randint as rint
 
 
 def make_header() -> dict:
-    headers = {}
-
-    if bool(rint(0, 1)):
-        headers.update({"Accept-Encoding": "gzip, deflate, br"})
-
-    if bool(rint(0, 1)):
-        headers.update({"Accept-Language": "en-US;q=0.5,en;q=0.3"})
-
-    if bool(rint(0, 1)):
-        headers.update({"Cache-Control": "max-age=0"})
-
-    if bool(rint(0, 1)):
-        headers.update({"DNT": "1"})
-
-    if bool(rint(0, 1)):
-        headers.update({"Upgrade-Insecure-Requests": "1"})
-
-    headers.update({"Referer": "https://%s" % random.choice(REFERERS)})
-
-    if bool(rint(0, 1)):
-        headers.update({"Pragma": "no-cache"})
-
+    # 预定义可选头信息，避免重复的条件判断和字典更新
+    optional_headers = [
+        ("Accept-Encoding", "gzip, deflate, br"),
+        ("Accept-Language", "en-US;q=0.5,en;q=0.3"),
+        ("Cache-Control", "max-age=0"),
+        ("DNT", "1"),
+        ("Upgrade-Insecure-Requests", "1"),
+        ("Pragma", "no-cache"),
+    ]
+    
+    # 一次性构建字典，减少多次update调用
+    headers = {
+        key: value 
+        for key, value in optional_headers 
+        if rint(0, 1)  # 直接使用rint结果，无需bool转换
+    }
+    
+    # 必需的Referer头
+    headers["Referer"] = f"https://{random.choice(REFERERS)}"
+    
     return headers
 
 

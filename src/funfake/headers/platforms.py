@@ -1,3 +1,4 @@
+import random
 from random import randint as rint
 
 
@@ -30,5 +31,5 @@ def linux() -> str:
 
 
 def random_os() -> str:
-    os = [windows, macos, linux]
-    return os[rint(0, 2)]()
+    os_functions = [windows, macos, linux]
+    return random.choice(os_functions)()

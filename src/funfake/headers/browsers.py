@@ -1,3 +1,4 @@
+import random
 from random import randint as rint
 
 
@@ -273,5 +274,5 @@ def opera() -> str:
 
 
 def random_browser() -> str:
-    os = [chrome, opera, firefox]
-    return os[rint(0, 2)]()
+    browsers = [chrome, opera, firefox]
+    return random.choice(browsers)()
