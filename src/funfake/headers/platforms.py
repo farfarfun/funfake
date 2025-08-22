@@ -4,13 +4,13 @@ from random import randint as rint
 
 def windows() -> str:
     etc = ["WOW64", "Win64; x64"]
-    ver = ["10.0", "6." + str(rint(0, 3))]
+    ver = ["10.0", f"6.{rint(0, 3)}"]
     main = "Windows NT "
 
-    version = ver[rint(0, 1)]
+    version = random.choice(ver)
 
-    if version == "10.0" or bool(rint(0, 1)):
-        version += "; " + etc[rint(0, 1)]
+    if version == "10.0" or rint(0, 1):
+        version += f"; {random.choice(etc)}"
 
     return main + version
 
@@ -27,7 +27,7 @@ def linux() -> str:
     ver = ["x86_64", "i686", "i686 on x86_64"]
     main = "X11; Linux "
 
-    return main + ver[rint(0, 2)]
+    return main + random.choice(ver)
 
 
 def random_os() -> str:

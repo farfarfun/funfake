@@ -12,17 +12,17 @@ def make_header() -> dict:
         ("Upgrade-Insecure-Requests", "1"),
         ("Pragma", "no-cache"),
     ]
-    
+
     # 一次性构建字典，减少多次update调用
     headers = {
-        key: value 
-        for key, value in optional_headers 
+        key: value
+        for key, value in optional_headers
         if rint(0, 1)  # 直接使用rint结果，无需bool转换
     }
-    
+
     # 必需的Referer头
     headers["Referer"] = f"https://{random.choice(REFERERS)}"
-    
+
     return headers
 
 
