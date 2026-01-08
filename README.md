@@ -1,7 +1,7 @@
 # funfake
 
 [![PyPI version](https://badge.fury.io/py/funfake.svg)](https://badge.fury.io/py/funfake)
-[![Python](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 一个轻量级的Python库，用于生成真实的HTTP请求头、各类姓名和手机号码，帮助模拟各种浏览器、操作系统和用户身份。
@@ -73,7 +73,7 @@ firefox_headers = Headers(browser='firefox', os='mac', headers=True)
 headers = firefox_headers.generate()
 
 # 只生成基础请求头（不包含额外头信息）
-basic_headers = Headers(browser='chrome', os='linux', headers=False)
+basic_headers = Headers(browser='chrome', os='lin', headers=False)
 headers = basic_headers.generate()
 
 # 生成多个不重复的请求头
@@ -394,9 +394,9 @@ phone = phone_gen.generate()  # 始终生成不带连字符的格式
 
 | 浏览器 | 支持版本数量 | 版本范围 |
 |--------|-------------|----------|
-| Chrome | 87+ | 50.0 - 87.0 |
-| Firefox | 138+ | 50.0 - 80.0 |
-| Opera | 42+ | 50.0 - 67.0 |
+| Chrome | 66 | 60 - 87 |
+| Firefox | 134 | 50 - 80 |
+| Opera | 41 | 50 - 67 |
 
 ## 🖥️ 支持的操作系统
 
@@ -406,7 +406,7 @@ phone = phone_gen.generate()  # 始终生成不带连字符的格式
 
 ## 🌐 真实引用域名
 
-内置532个真实网站域名作为Referer，包括：
+内置500个真实网站域名作为Referer，包括：
 - Google、YouTube、Facebook等主流网站
 - 各国Wikipedia、新闻媒体网站
 - 技术类网站如GitHub、Stack Overflow

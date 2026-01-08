@@ -39,9 +39,9 @@ headers = headers_gen.generate()
 
 支持三种主流浏览器的User-Agent生成：
 
-- **Chrome**: 71个版本，从50.0到87.0
-- **Firefox**: 138个版本，从50.0到80.0
-- **Opera**: 42个版本，从50.0到67.0
+- **Chrome**: 66个版本，从60到87
+- **Firefox**: 134个版本，从50到80
+- **Opera**: 41个版本，从50到67
 
 ```python
 from funfake.headers.browsers import chrome, firefox, opera, random_browser
@@ -117,10 +117,10 @@ headers = random_headers.generate()
 
 | 组件 | 数据量 | 说明 |
 |------|--------|------|
-| Chrome版本 | 71个 | 涵盖主流版本号 |
-| Firefox版本 | 138个 | 包含ESR和常规版本 |
-| Opera版本 | 42个 | 基于Chromium的版本 |
-| 引用域名 | 532个 | 真实网站域名 |
+| Chrome版本 | 66个 | 涵盖主流版本号 |
+| Firefox版本 | 134个 | 包含ESR和常规版本 |
+| Opera版本 | 41个 | 基于Chromium的版本 |
+| 引用域名 | 500个 | 真实网站域名 |
 | Windows版本 | 动态生成 | NT 6.0-10.0 |
 | macOS版本 | 动态生成 | 10.10-10.14 |
 | Linux架构 | 3种 | x86_64, i686等 |
@@ -185,7 +185,7 @@ def new_platform() -> str:
 
 ## 🌐 引用域名
 
-内置532个真实网站域名，包括：
+内置500个真实网站域名，包括：
 
 - **搜索引擎**: Google, Bing, Yahoo等
 - **社交媒体**: Facebook, Twitter, LinkedIn等  
