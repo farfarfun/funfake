@@ -1,0 +1,11 @@
+version = 1
+revision = 3
+requires-python = ">=3.7"
+
+[options]
+prerelease-mode = "allow"
+
+[[package]]
+name = "funfake"
+version = "1.1.1"
+source = { virtual = "." }

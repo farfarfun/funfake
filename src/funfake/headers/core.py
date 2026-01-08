@@ -1,9 +1,10 @@
+from ..base import BaseGenerator
 from .browsers import chrome, firefox, opera, random_browser
 from .headers import make_header
 from .platforms import linux, macos, random_os, windows
 
 
-class Headers:
+class Headers(BaseGenerator):
     """
     browser - str, chrome/firefox/opera. User Agent browser. Default: random\n
     os - str, win/mac/lin. OS of User Agent. Default: random\n
