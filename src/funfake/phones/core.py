@@ -1,6 +1,11 @@
 """
-手机号码生成器。
-支持生成不同国家和运营商的手机号码。
+手机号码生成模块。
+
+该模块提供了中国和美国手机号码的生成功能，支持：
+- 中国手机号：11位，支持移动、联通、电信三大运营商
+- 美国手机号：10位，支持带/不带连字符格式
+- 运营商权重控制（中国移动用户最多）
+- 批量生成不重复的手机号码
 """
 
 import random
@@ -12,7 +17,41 @@ from ..base import BaseGenerator
 class ChinesePhone(BaseGenerator):
     """
     中国手机号码生成器。
-    支持三大运营商：移动、联通、电信。
+    
+    生成符合中国手机号码格式的11位号码，支持三大运营商的真实号段。
+    支持按运营商分组生成，并使用权重模拟真实的运营商用户分布。
+    
+    运营商支持：
+        - 移动：134-139, 147, 150-152, 157-159, 178, 182-184, 187-188, 198
+        - 联通：130-132, 145, 155-156, 166, 171, 175-176, 185-186
+        - 电信：133, 149, 153, 173, 177, 180-181, 189, 199
+    
+    权重设置：
+        - 移动权重：10.0（市场份额最大）
+        - 联通权重：6.0（第二大运营商）
+        - 电信权重：4.0（第三大运营商）
+    
+    Args:
+        operator: 运营商类型，可选值：
+                 - '移动': 只生成移动号码
+                 - '联通': 只生成联通号码
+                 - '电信': 只生成电信号码
+                 - None: 按权重随机选择（默认）
+    
+    Example:
+        >>> gen = ChinesePhone()
+        >>> 
+        >>> # 生成随机手机号（按权重，移动概率最高）
+        >>> phone = gen.generate()
+        >>> print(phone)  # 例如：13812345678
+        >>> 
+        >>> # 只生成移动号码
+        >>> phone = gen.generate(operator="移动")
+        >>> print(phone)  # 例如：13912345678
+        >>> 
+        >>> # 查看可用运营商
+        >>> operators = gen.get_operators()
+        >>> print(operators)  # ['移动', '联通', '电信']
     """
 
     # 中国移动号段（11位，1开头）
@@ -93,12 +132,22 @@ class ChinesePhone(BaseGenerator):
         初始化中国手机号生成器。
 
         Args:
-            operator: 运营商类型，'移动'/'联通'/'电信'，None 表示随机选择
+            operator: 运营商类型，'移动'/'联通'/'电信'，None 表示按权重随机选择（默认）
         """
         self.operator = operator
 
     def _get_prefixes(self) -> List[str]:
-        """获取可用的号段前缀"""
+        """
+        获取可用的号段前缀列表。
+        
+        根据指定的运营商或权重随机选择返回对应的号段前缀。
+        
+        Returns:
+            List[str]: 号段前缀列表（3位数字字符串）
+            
+        Raises:
+            ValueError: 当指定的运营商不存在时
+        """
         if self.operator:
             if self.operator not in self.OPERATOR_GROUPS:
                 raise ValueError(
@@ -106,7 +155,7 @@ class ChinesePhone(BaseGenerator):
                 )
             return self.OPERATOR_GROUPS[self.operator]
         else:
-            # 根据权重随机选择运营商
+            # 未指定运营商时，根据权重随机选择一个运营商
             operators = list(self.OPERATOR_GROUPS.keys())
             weights = [self.OPERATOR_WEIGHTS[op] for op in operators]
             selected_operator = random.choices(operators, weights=weights, k=1)[0]
@@ -114,13 +163,27 @@ class ChinesePhone(BaseGenerator):
 
     def generate(self, operator: Optional[str] = None) -> str:
         """
-        生成中国手机号码。
+        生成一个中国手机号码。
+        
+        生成格式为 11 位数字的手机号码，前 3 位为号段，后 8 位随机生成。
 
         Args:
-            operator: 运营商类型，'移动'/'联通'/'电信'，None 表示随机选择（临时覆盖初始化时的设置）
+            operator: 临时指定运营商类型，会覆盖初始化时的设置
+                     - '移动': 生成移动号码
+                     - '联通': 生成联通号码
+                     - '电信': 生成电信号码
+                     - None: 使用初始化时的设置
 
         Returns:
-            str: 生成的11位手机号码
+            str: 生成的 11 位手机号码（纯数字字符串）
+            
+        Example:
+            >>> gen = ChinesePhone()
+            >>> phone = gen.generate()
+            >>> print(phone)
+            13812345678
+            >>> len(phone)
+            11
         """
         original_operator = self.operator
         try:
@@ -130,7 +193,7 @@ class ChinesePhone(BaseGenerator):
             prefixes = self._get_prefixes()
             prefix = random.choice(prefixes)
 
-            # 生成后8位数字（手机号共11位，前3位是号段）
+            # 生成后 8 位数字（手机号共 11 位，前 3 位是号段）
             suffix = "".join([str(random.randint(0, 9)) for _ in range(8)])
 
             return prefix + suffix
@@ -139,10 +202,16 @@ class ChinesePhone(BaseGenerator):
 
     def get_operators(self) -> List[str]:
         """
-        获取所有可用的运营商。
+        获取所有可用的运营商列表。
 
         Returns:
-            List[str]: 运营商列表
+            List[str]: 运营商名称列表 ['移动', '联通', '电信']
+            
+        Example:
+            >>> gen = ChinesePhone()
+            >>> operators = gen.get_operators()
+            >>> print(operators)
+            ['移动', '联通', '电信']
         """
         return list(self.OPERATOR_GROUPS.keys())
 
@@ -150,7 +219,36 @@ class ChinesePhone(BaseGenerator):
 class EnglishPhone(BaseGenerator):
     """
     美国手机号码生成器。
-    生成美国格式的手机号码（10位数字，格式：XXX-XXX-XXXX）。
+    
+    生成符合美国手机号码格式的 10 位号码，支持带/不带连字符的格式。
+    使用真实的美国区号（Area Code），确保号码的真实性。
+    
+    格式说明：
+        - 带连字符：XXX-XXX-XXXX（12个字符，便于阅读）
+        - 不带连字符：XXXXXXXXXX（10个字符，纯数字）
+    
+    区号规则：
+        - 前 3 位为区号，从 200+ 个真实美国区号中随机选择
+        - 区号不以 0 或 1 开头
+        - 中间 3 位（Exchange）范围为 200-999
+        - 后 4 位随机生成
+    
+    Args:
+        format_with_dash: 是否使用连字符格式，默认 True
+                         - True: 生成 XXX-XXX-XXXX 格式
+                         - False: 生成 XXXXXXXXXX 格式
+    
+    Example:
+        >>> gen = EnglishPhone()
+        >>> 
+        >>> # 生成带连字符的号码（默认）
+        >>> phone = gen.generate()
+        >>> print(phone)  # 例如：555-123-4567
+        >>> 
+        >>> # 生成不带连字符的号码
+        >>> gen = EnglishPhone(format_with_dash=False)
+        >>> phone = gen.generate()
+        >>> print(phone)  # 例如：5551234567
     """
 
     # 美国手机号区号（前3位，不能以0或1开头）
@@ -531,25 +629,39 @@ class EnglishPhone(BaseGenerator):
 
     def generate(self, format_with_dash: Optional[bool] = None) -> str:
         """
-        生成美国手机号码。
+        生成一个美国手机号码。
 
         Args:
-            format_with_dash: 是否使用连字符格式化，None 表示使用初始化时的设置
+            format_with_dash: 临时指定是否使用连字符格式，会覆盖初始化时的设置
+                            - True: 使用连字符格式 XXX-XXX-XXXX
+                            - False: 不使用连字符格式 XXXXXXXXXX
+                            - None: 使用初始化时的设置（默认）
 
         Returns:
-            str: 生成的手机号码（格式：XXX-XXX-XXXX 或 XXXXXXXXXX）
+            str: 生成的手机号码，格式为 XXX-XXX-XXXX 或 XXXXXXXXXX
+            
+        Example:
+            >>> gen = EnglishPhone()
+            >>> phone = gen.generate()
+            >>> print(phone)
+            555-123-4567
+            >>> 
+            >>> # 临时使用不带连字符的格式
+            >>> phone = gen.generate(format_with_dash=False)
+            >>> print(phone)
+            5551234567
         """
         use_dash = (
             format_with_dash if format_with_dash is not None else self.format_with_dash
         )
 
-        # 选择区号
+        # 从真实区号列表中随机选择一个
         area_code = random.choice(self.AREA_CODES)
 
-        # 生成中间3位（不能以0或1开头）
+        # 生成中间 3 位（Exchange，不能以 0 或 1 开头，范围 200-999）
         exchange = str(random.randint(200, 999))
 
-        # 生成后4位
+        # 生成后 4 位（Line Number）
         number = "".join([str(random.randint(0, 9)) for _ in range(4)])
 
         if use_dash:
@@ -558,7 +670,7 @@ class EnglishPhone(BaseGenerator):
             return f"{area_code}{exchange}{number}"
 
 
-# 全局实例，用于快速生成
+# 全局单例，用于快速生成手机号
 __chinese_phone = ChinesePhone()
 __english_phone = EnglishPhone()
 
@@ -566,17 +678,36 @@ __english_phone = EnglishPhone()
 def fake_phone(country: Optional[str] = None) -> str:
     """
     快速生成随机手机号码。
+    
+    这是一个便捷函数，可以快速生成中国或美国的手机号码。
 
     Args:
-        country: 国家类型，'chinese' 或 'english'，None 表示随机选择
+        country: 国家类型，可选值：
+                - 'chinese': 生成中国手机号
+                - 'english': 生成美国手机号
+                - None: 随机选择中国或美国（默认）
 
     Returns:
-        str: 生成的手机号码
+        str: 生成的手机号码（中国或美国格式）
+        
+    Example:
+        >>> from funfake import fake_phone
+        >>> 
+        >>> # 生成中国手机号
+        >>> phone = fake_phone('chinese')
+        >>> print(phone)  # 13812345678
+        >>> 
+        >>> # 生成美国手机号
+        >>> phone = fake_phone('english')
+        >>> print(phone)  # 555-123-4567
+        >>> 
+        >>> # 随机生成
+        >>> phone = fake_phone()  # 可能是中国或美国手机号
     """
     if country == "chinese":
         return __chinese_phone.generate()
     elif country == "english":
         return __english_phone.generate()
     else:
-        # 随机选择
+        # 随机选择中国或美国
         return random.choice([__chinese_phone, __english_phone]).generate()
