@@ -1,6 +1,18 @@
 """
-场景类姓名生成器。
-包含水浒传、西游记、红楼梦、三国演义、封神演义、金庸武侠等经典文学作品的姓名生成器。
+场景类姓名生成器模块。
+
+该模块提供了基于经典文学作品的场景化姓名生成器，包括：
+- 水浒传：108位梁山好汉及反派人物
+- 西游记：正派、反派、中立人物
+- 红楼梦：主要角色、次要角色、丫鬟等
+- 三国演义：蜀汉、曹魏、东吴、其他势力人物
+- 封神演义：阐教、截教、商朝、周朝等人物
+- 金庸武侠：按作品分组的人物
+
+每个生成器都支持：
+- 按分组生成（如正派/反派、不同势力等）
+- 概率权重控制（不同分组有不同的出现概率）
+- 批量生成不重复的姓名
 """
 
 from typing import Dict, List
@@ -10,8 +22,36 @@ from ..base import ListBasedGenerator
 
 class WaterMarginName(ListBasedGenerator):
     """
-    水浒传系列姓名生成器。
-    生成水浒传中的人物姓名，支持按正派/反派分组。
+    水浒传人物姓名生成器。
+    
+    生成《水浒传》中的人物姓名，包括108位梁山好汉及其他人物。
+    支持按正派/反派分组生成。
+    
+    分组说明：
+        - 正派：108位梁山好汉（如宋江、林冲、武松等）
+        - 反派：高俅、蔡京等反派人物
+    
+    权重设置：
+        - 正派权重：10.0（出现概率更高）
+        - 反派权重：1.0
+    
+    Example:
+        >>> gen = WaterMarginName()
+        >>> 
+        >>> # 查看可用分组
+        >>> groups = gen.get_groups()
+        >>> print(groups)  # ['正派', '反派']
+        >>> 
+        >>> # 生成正派人物
+        >>> name = gen.generate(group="正派")
+        >>> print(name)  # 例如：林冲、武松
+        >>> 
+        >>> # 生成反派人物
+        >>> name = gen.generate(group="反派")
+        >>> print(name)  # 例如：高俅
+        >>> 
+        >>> # 随机生成（权重影响概率，正派人物出现概率更高）
+        >>> name = gen.generate()
     """
 
     # 按正派/反派分组
@@ -153,8 +193,31 @@ class WaterMarginName(ListBasedGenerator):
 
 class JourneyToWestName(ListBasedGenerator):
     """
-    西游记系列姓名生成器。
-    生成西游记中的人物姓名，支持按正派/反派/中立分组。
+    西游记人物姓名生成器。
+    
+    生成《西游记》中的人物姓名，包括正派、反派和中立人物。
+    支持按角色立场分组生成。
+    
+    分组说明：
+        - 正派：孙悟空、观音菩萨、如来佛祖等正面人物
+        - 反派：牛魔王、白骨精、红孩儿等妖怪反派
+        - 中立：土地、山神等中立神仙
+    
+    权重设置：
+        - 正派权重：8.0（主角和重要人物）
+        - 反派权重：5.0（各路妖怪）
+        - 中立权重：2.0（配角神仙）
+    
+    Example:
+        >>> gen = JourneyToWestName()
+        >>> 
+        >>> # 生成正派人物
+        >>> name = gen.generate(group="正派")
+        >>> print(name)  # 例如：孙悟空、观音菩萨
+        >>> 
+        >>> # 生成反派妖怪
+        >>> name = gen.generate(group="反派")
+        >>> print(name)  # 例如：牛魔王、白骨精
     """
 
     NAMES_BY_GROUP: Dict[str, List[str]] = {
@@ -250,8 +313,31 @@ class JourneyToWestName(ListBasedGenerator):
 
 class DreamOfRedChamberName(ListBasedGenerator):
     """
-    红楼梦系列姓名生成器。
-    生成红楼梦中的人物姓名，支持按主要角色/次要角色分组。
+    红楼梦人物姓名生成器。
+    
+    生成《红楼梦》中的人物姓名，包括主要角色、次要角色和丫鬟等。
+    支持按人物重要性分组生成。
+    
+    分组说明：
+        - 主要角色：贾宝玉、林黛玉、薛宝钗等核心人物
+        - 次要角色：贾母、王熙凤等重要配角
+        - 丫鬟：袭人、晴雯、紫鹃等丫鬟人物
+    
+    权重设置：
+        - 主要角色权重：10.0（核心人物）
+        - 次要角色权重：5.0（重要配角）
+        - 丫鬟权重：3.0（次要配角）
+    
+    Example:
+        >>> gen = DreamOfRedChamberName()
+        >>> 
+        >>> # 生成主要角色
+        >>> name = gen.generate(group="主要角色")
+        >>> print(name)  # 例如：贾宝玉、林黛玉
+        >>> 
+        >>> # 生成丫鬟
+        >>> name = gen.generate(group="丫鬟")
+        >>> print(name)  # 例如：袭人、晴雯
     """
 
     NAMES_BY_GROUP: Dict[str, List[str]] = {
@@ -378,8 +464,33 @@ class DreamOfRedChamberName(ListBasedGenerator):
 
 class RomanceOfThreeKingdomsName(ListBasedGenerator):
     """
-    三国演义系列姓名生成器。
-    生成三国演义中的人物姓名，支持按势力分组。
+    三国演义人物姓名生成器。
+    
+    生成《三国演义》中的人物姓名，包括蜀汉、曹魏、东吴三大势力及其他人物。
+    支持按历史势力分组生成。
+    
+    分组说明：
+        - 蜀汉：刘备、关羽、张飞、诸葛亮等蜀汉人物
+        - 曹魏：曹操、司马懿、夏侯惇等曹魏人物
+        - 东吴：孙权、周瑜、鲁肃等东吴人物
+        - 其他：董卓、吕布等其他势力人物
+    
+    权重设置：
+        - 蜀汉权重：8.0（主角集团）
+        - 曹魏权重：8.0（主要对手）
+        - 东吴权重：8.0（三足鼎立）
+        - 其他权重：3.0（其他势力）
+    
+    Example:
+        >>> gen = RomanceOfThreeKingdomsName()
+        >>> 
+        >>> # 生成蜀汉人物
+        >>> name = gen.generate(group="蜀汉")
+        >>> print(name)  # 例如：刘备、诸葛亮
+        >>> 
+        >>> # 生成曹魏人物
+        >>> name = gen.generate(group="曹魏")
+        >>> print(name)  # 例如：曹操、司马懿
     """
 
     NAMES_BY_GROUP: Dict[str, List[str]] = {
@@ -607,8 +718,35 @@ class RomanceOfThreeKingdomsName(ListBasedGenerator):
 
 class InvestitureOfGodsName(ListBasedGenerator):
     """
-    封神演义系列姓名生成器。
-    生成封神演义中的人物姓名，支持按阵营分组。
+    封神演义人物姓名生成器。
+    
+    生成《封神演义》中的人物姓名，包括阐教、截教、商朝、周朝等不同阵营人物。
+    支持按神仙阵营和历史势力分组生成。
+    
+    分组说明：
+        - 阐教：姜子牙、哪吒、杨戬等元始天尊门下弟子
+        - 截教：通天教主、赵公明、三霄娘娘等截教人物
+        - 商朝：纣王、妲己、闻仲等商朝阵营
+        - 周朝：周文王、周武王、姬发等周朝阵营
+        - 其他：独立修仙者和其他人物
+    
+    权重设置：
+        - 阐教权重：10.0（主角集团）
+        - 截教权重：8.0（主要对手）
+        - 商朝权重：5.0（反派势力）
+        - 周朝权重：5.0（正派势力）
+        - 其他权重：2.0（独立人物）
+    
+    Example:
+        >>> gen = InvestitureOfGodsName()
+        >>> 
+        >>> # 生成阐教人物
+        >>> name = gen.generate(group="阐教")
+        >>> print(name)  # 例如：姜子牙、哪吒
+        >>> 
+        >>> # 生成截教人物
+        >>> name = gen.generate(group="截教")
+        >>> print(name)  # 例如：赵公明、云霄
     """
 
     NAMES_BY_GROUP: Dict[str, List[str]] = {
@@ -759,8 +897,34 @@ class InvestitureOfGodsName(ListBasedGenerator):
 
 class JinYongWuxiaName(ListBasedGenerator):
     """
-    金庸武侠系列姓名生成器。
-    生成金庸武侠小说中的人物姓名，支持按作品分组。
+    金庸武侠人物姓名生成器。
+    
+    生成金庸武侠小说中的人物姓名，涵盖金庸先生的多部经典作品。
+    支持按不同作品分组生成。
+    
+    分组说明：
+        - 射雕英雄传：郭靖、黄蓉、洪七公等
+        - 神雕侠侣：杨过、小龙女、郭襄等
+        - 天龙八部：乔峰、段誉、虚竹等
+        - 笑傲江湖：令狐冲、任盈盈、东方不败等
+        - 倚天屠龙记：张无忌、赵敏、周芷若等
+        - 鹿鼎记：韦小宝、康熙、双儿等
+        - 其他：其他作品及通用人物
+    
+    权重设置：
+        - 各作品权重基本相等（7.0-10.0），保证多样性
+    
+    Example:
+        >>> gen = JinYongWuxiaName()
+        >>> 
+        >>> # 生成《射雕英雄传》人物
+        >>> name = gen.generate(group="射雕英雄传")
+        >>> print(name)  # 例如：郭靖、黄蓉
+        >>> 
+        >>> # 生成《天龙八部》人物
+        >>> name = gen.generate(group="天龙八部")
+        >>> print(name)  # 例如：乔峰、段誉
+    """
     """
 
     NAMES_BY_GROUP: Dict[str, List[str]] = {
