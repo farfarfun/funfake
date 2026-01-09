@@ -925,7 +925,6 @@ class JinYongWuxiaName(ListBasedGenerator):
         >>> name = gen.generate(group="天龙八部")
         >>> print(name)  # 例如：乔峰、段誉
     """
-    """
 
     NAMES_BY_GROUP: Dict[str, List[str]] = {
         "射雕英雄传": [
