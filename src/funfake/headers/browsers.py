@@ -2,9 +2,9 @@
 浏览器 User-Agent 生成模块。
 
 该模块提供了主流浏览器的 User-Agent 字符串生成功能，支持：
-- Chrome: 71个不同版本
-- Firefox: 138个不同版本（包含 ESR 和常规版本）
-- Opera: 42个不同版本（基于 Chromium）
+- Chrome: 66个不同版本
+- Firefox: 134个不同版本（包含 ESR 和常规版本）
+- Opera: 41个不同版本（基于 Chromium）
 
 每个函数返回的 User-Agent 字符串中都包含占位符 %PLAT%，
 需要由调用方替换为具体的操作系统平台信息。
@@ -14,7 +14,7 @@ import random
 from random import randint as rint
 
 
-# Chrome 浏览器版本列表（71个版本，范围从 50.0 到 87.0）
+# Chrome 浏览器版本列表（66个版本，范围从 60.0 到 87.0）
 chrome_ver = [
     "87.0",
     "87.0",
@@ -99,7 +99,7 @@ def firefox() -> str:
     """
     main = "Mozilla/5.0 (%PLAT%; rv:%VER%) Gecko/20100101 Firefox/%VER%"
 
-    # Firefox 版本列表（138个版本，范围从 50.0 到 80.0，包含 ESR 版本）
+    # Firefox 版本列表（134个版本，范围从 50.0 到 80.0，包含 ESR 版本）
     ver = [
         "80.0",
         "80.0.1",
@@ -272,7 +272,7 @@ def opera() -> str:
     """
     response = "Mozilla/5.0 (%PLAT%) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%CVER% Safari/537.36 OPR/%OVER%"
 
-    # Opera 版本列表（42个版本，范围从 50.0 到 67.0）
+    # Opera 版本列表（41个版本，范围从 50.0 到 67.0）
     ver = [
         "67.0.3575.130",
         "66.0.3515.72",
