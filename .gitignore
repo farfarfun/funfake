@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 .idea
+.vscode/
+
+# Databases / archives / runtime files
+*.db
+*.rar
+.run/
+logs/
 
 # Distribution / packaging
 .Python
