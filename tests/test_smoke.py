@@ -1,10 +1,11 @@
 """
-funfake 轻量冒烟测试套件（smoke tests）。
+funfake 测试套件。
 
 范围说明：
-    本测试套件只做“冒烟级”验证 —— 确认包能正常导入、核心公开
-    类/函数能以简单参数正常调用并返回合理形状的结果，不追求覆盖
-    所有分支或边界条件的详尽单元测试。
+    在冒烟级验证（包能正常导入、核心公开类/函数能以简单参数正常调用并
+    返回合理形状的结果）之上，额外覆盖了公开 API 的部分边界与非法参数
+    场景，例如 fake_name/fake_phone 传入未知取值、分组去重数量超限、
+    Headers.empty()、headers.headers.make_header() 的返回结构等。
 
 背景：
     funfake 是一个纯本地随机数据生成库（HTTP 请求头 / 姓名 / 手机号），
@@ -15,7 +16,6 @@ funfake 轻量冒烟测试套件（smoke tests）。
 import random
 
 import pytest
-
 
 # ---------------------------------------------------------------------------
 # 1. 顶层包 / 子模块导入
@@ -315,3 +315,72 @@ def test_determinism_smoke_with_seed():
 
 def test_cli_entry_point_not_declared():
     pytest.skip("funfake 的 pyproject.toml 未声明任何 [project.scripts] CLI 入口点，跳过 CLI 冒烟测试")
+
+
+# ---------------------------------------------------------------------------
+# 9. 边界与非法参数
+# ---------------------------------------------------------------------------
+
+
+def test_fake_name_invalid_language_falls_back_to_random():
+    # fake_name 对未知 language 值走 else 分支，按随机中/英文处理，不抛异常
+    from funfake import fake_name
+
+    name = fake_name("not-a-real-language")
+    assert isinstance(name, str)
+    assert len(name) > 0
+
+
+def test_fake_phone_invalid_country_falls_back_to_random():
+    # fake_phone 对未知 country 值同样走 else 分支，按随机中国/美国号码处理
+    from funfake import fake_phone
+
+    phone = fake_phone("not-a-real-country")
+    assert isinstance(phone, str)
+    assert len(phone) > 0
+
+
+def test_headers_empty_returns_empty_dict():
+    from funfake.headers import Headers
+
+    gen = Headers(browser="chrome", os="win", headers=False)
+    assert gen.empty() == {}
+
+
+def test_headers_make_header_contains_referer_and_optional_keys():
+    from funfake.headers.headers import make_header
+
+    optional_keys = {
+        "Accept-Encoding",
+        "Accept-Language",
+        "Cache-Control",
+        "DNT",
+        "Upgrade-Insecure-Requests",
+        "Pragma",
+    }
+
+    # 多次生成以覆盖可选头信息的随机出现/缺失两种情况
+    for _ in range(20):
+        result = make_header()
+        assert isinstance(result, dict)
+        assert "Referer" in result
+        assert result["Referer"].startswith("https://")
+        # 除 Referer 外，其余 key 必须都是已知的可选头
+        assert set(result.keys()) - {"Referer"} <= optional_keys
+
+
+def test_water_margin_generate_many_no_duplicates_within_group():
+    from funfake.names.scenarios import WaterMarginName
+
+    gen = WaterMarginName()
+    names = gen.generate_many(5, allow_duplicates=False, group="反派")
+    assert len(names) == len(set(names)) == 5
+
+
+def test_water_margin_generate_many_exceeds_group_size_raises():
+    from funfake.names.scenarios import WaterMarginName
+
+    gen = WaterMarginName()
+    # "反派" 分组仅有 14 个人物，请求超过该数量且不允许重复应报错
+    with pytest.raises(ValueError):
+        gen.generate_many(100, allow_duplicates=False, group="反派")
