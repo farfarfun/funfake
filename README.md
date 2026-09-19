@@ -1,7 +1,7 @@
 # funfake
 
 [![PyPI version](https://badge.fury.io/py/funfake.svg)](https://badge.fury.io/py/funfake)
-[![Python](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 一个轻量级的Python库，用于生成真实的HTTP请求头、各类姓名和手机号码，帮助模拟各种浏览器、操作系统和用户身份。
@@ -648,3 +648,16 @@ phone2 = phone_gen2.generate()  # "5551234567"
 - [PyPI包](https://pypi.org/project/funfake/)
 - [发布页面](https://github.com/farfarfun/funfake/releases)
 - [组织主页](https://github.com/farfarfun)
+
+---
+
+## 关于 farfarfun
+
+[farfarfun](https://github.com/farfarfun) 是一个专注于实用工具库的开源组织，
+涵盖云存储、数据处理、AI、多媒体与开发工具链等方向。
+
+- 🏠 组织主页：<https://github.com/farfarfun>
+- 📦 PyPI：<https://pypi.org/user/niuliangtao/>
+- 📧 联系：farfarfun@qq.com
+
+本项目基于 [MIT](LICENSE) 协议开源。

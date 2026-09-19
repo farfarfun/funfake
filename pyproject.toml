@@ -4,6 +4,7 @@ version = "1.1.6"
 description = "A lightweight Python library for generating realistic HTTP headers to simulate various browsers and operating systems"
 readme = "README.md"
 requires-python = ">=3.10"
+license = "MIT"
 dependencies = []
 [[project.authors]]
 name = "牛哥"
@@ -27,7 +28,7 @@ Repository = "https://github.com/farfarfun/funfake"
 Releases = "https://github.com/farfarfun/funfake/releases"
 
 [tool.setuptools]
-license-files = []
+license-files = ["LICENSE"]
 
 [build-system]
 requires = ["hatchling"]
