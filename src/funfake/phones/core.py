@@ -9,7 +9,6 @@
 """
 
 import random
-from typing import List, Optional
 
 from ..base import BaseGenerator
 
@@ -127,7 +126,7 @@ class ChinesePhone(BaseGenerator):
         "电信": 4.0,
     }
 
-    def __init__(self, operator: Optional[str] = None):
+    def __init__(self, operator: str | None = None):
         """
         初始化中国手机号生成器。
 
@@ -136,14 +135,14 @@ class ChinesePhone(BaseGenerator):
         """
         self.operator = operator
 
-    def _get_prefixes(self) -> List[str]:
+    def _get_prefixes(self) -> list[str]:
         """
         获取可用的号段前缀列表。
         
         根据指定的运营商或权重随机选择返回对应的号段前缀。
         
         Returns:
-            List[str]: 号段前缀列表（3位数字字符串）
+            list[str]: 号段前缀列表（3位数字字符串）
             
         Raises:
             ValueError: 当指定的运营商不存在时
@@ -161,7 +160,7 @@ class ChinesePhone(BaseGenerator):
             selected_operator = random.choices(operators, weights=weights, k=1)[0]
             return self.OPERATOR_GROUPS[selected_operator]
 
-    def generate(self, operator: Optional[str] = None) -> str:
+    def generate(self, operator: str | None = None) -> str:
         """
         生成一个中国手机号码。
         
@@ -200,12 +199,12 @@ class ChinesePhone(BaseGenerator):
         finally:
             self.operator = original_operator
 
-    def get_operators(self) -> List[str]:
+    def get_operators(self) -> list[str]:
         """
         获取所有可用的运营商列表。
 
         Returns:
-            List[str]: 运营商名称列表 ['移动', '联通', '电信']
+            list[str]: 运营商名称列表 ['移动', '联通', '电信']
             
         Example:
             >>> gen = ChinesePhone()
@@ -627,7 +626,7 @@ class EnglishPhone(BaseGenerator):
         """
         self.format_with_dash = format_with_dash
 
-    def generate(self, format_with_dash: Optional[bool] = None) -> str:
+    def generate(self, format_with_dash: bool | None = None) -> str:
         """
         生成一个美国手机号码。
 
@@ -675,7 +674,7 @@ __chinese_phone = ChinesePhone()
 __english_phone = EnglishPhone()
 
 
-def fake_phone(country: Optional[str] = None) -> str:
+def fake_phone(country: str | None = None) -> str:
     """
     快速生成随机手机号码。
     

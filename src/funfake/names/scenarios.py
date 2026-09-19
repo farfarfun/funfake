@@ -15,8 +15,6 @@
 - 批量生成不重复的姓名
 """
 
-from typing import Dict, List
-
 from ..base import ListBasedGenerator
 
 
@@ -55,7 +53,7 @@ class WaterMarginName(ListBasedGenerator):
     """
 
     # 按正派/反派分组
-    NAMES_BY_GROUP: Dict[str, List[str]] = {
+    NAMES_BY_GROUP: dict[str, list[str]] = {
         "正派": [
             "宋江",
             "卢俊义",
@@ -185,7 +183,7 @@ class WaterMarginName(ListBasedGenerator):
     }
 
     # 组的权重（正派出现概率更高）
-    GROUP_WEIGHTS: Dict[str, float] = {
+    GROUP_WEIGHTS: dict[str, float] = {
         "正派": 10.0,
         "反派": 1.0,
     }
@@ -220,7 +218,7 @@ class JourneyToWestName(ListBasedGenerator):
         >>> print(name)  # 例如：牛魔王、白骨精
     """
 
-    NAMES_BY_GROUP: Dict[str, List[str]] = {
+    NAMES_BY_GROUP: dict[str, list[str]] = {
         "正派": [
             "孙悟空",
             "猪八戒",
@@ -304,7 +302,7 @@ class JourneyToWestName(ListBasedGenerator):
         ],
     }
 
-    GROUP_WEIGHTS: Dict[str, float] = {
+    GROUP_WEIGHTS: dict[str, float] = {
         "正派": 8.0,
         "反派": 5.0,
         "中立": 2.0,
@@ -340,7 +338,7 @@ class DreamOfRedChamberName(ListBasedGenerator):
         >>> print(name)  # 例如：袭人、晴雯
     """
 
-    NAMES_BY_GROUP: Dict[str, List[str]] = {
+    NAMES_BY_GROUP: dict[str, list[str]] = {
         "主要角色": [
             "贾宝玉",
             "林黛玉",
@@ -455,7 +453,7 @@ class DreamOfRedChamberName(ListBasedGenerator):
         ],
     }
 
-    GROUP_WEIGHTS: Dict[str, float] = {
+    GROUP_WEIGHTS: dict[str, float] = {
         "主要角色": 10.0,
         "次要角色": 5.0,
         "丫鬟": 2.0,
@@ -493,7 +491,7 @@ class RomanceOfThreeKingdomsName(ListBasedGenerator):
         >>> print(name)  # 例如：曹操、司马懿
     """
 
-    NAMES_BY_GROUP: Dict[str, List[str]] = {
+    NAMES_BY_GROUP: dict[str, list[str]] = {
         "蜀汉": [
             "刘备",
             "关羽",
@@ -708,7 +706,7 @@ class RomanceOfThreeKingdomsName(ListBasedGenerator):
         ],
     }
 
-    GROUP_WEIGHTS: Dict[str, float] = {
+    GROUP_WEIGHTS: dict[str, float] = {
         "蜀汉": 8.0,
         "曹魏": 8.0,
         "东吴": 8.0,
@@ -749,7 +747,7 @@ class InvestitureOfGodsName(ListBasedGenerator):
         >>> print(name)  # 例如：赵公明、云霄
     """
 
-    NAMES_BY_GROUP: Dict[str, List[str]] = {
+    NAMES_BY_GROUP: dict[str, list[str]] = {
         "阐教": [
             "姜子牙",
             "申公豹",
@@ -886,7 +884,7 @@ class InvestitureOfGodsName(ListBasedGenerator):
         ],
     }
 
-    GROUP_WEIGHTS: Dict[str, float] = {
+    GROUP_WEIGHTS: dict[str, float] = {
         "阐教": 8.0,
         "截教": 7.0,
         "商朝": 5.0,
@@ -926,7 +924,7 @@ class JinYongWuxiaName(ListBasedGenerator):
         >>> print(name)  # 例如：乔峰、段誉
     """
 
-    NAMES_BY_GROUP: Dict[str, List[str]] = {
+    NAMES_BY_GROUP: dict[str, list[str]] = {
         "射雕英雄传": [
             "郭靖",
             "黄蓉",
@@ -1165,7 +1163,7 @@ class JinYongWuxiaName(ListBasedGenerator):
         ],
     }
 
-    GROUP_WEIGHTS: Dict[str, float] = {
+    GROUP_WEIGHTS: dict[str, float] = {
         "射雕英雄传": 8.0,
         "神雕侠侣": 8.0,
         "天龙八部": 9.0,

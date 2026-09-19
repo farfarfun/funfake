@@ -8,7 +8,6 @@
 """
 
 import random
-from typing import Optional
 
 from ..base import BaseGenerator
 
@@ -1090,7 +1089,7 @@ __chinese_name = ChineseName()
 __english_name = EnglishName()
 
 
-def fake_name(language: Optional[str] = None) -> str:
+def fake_name(language: str | None = None) -> str:
     """
     快速生成随机姓名。
     
