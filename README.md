@@ -73,7 +73,7 @@ firefox_headers = Headers(browser='firefox', os='mac', headers=True)
 headers = firefox_headers.generate()
 
 # 只生成基础请求头（不包含额外头信息）
-basic_headers = Headers(browser='chrome', os='linux', headers=False)
+basic_headers = Headers(browser='chrome', os='lin', headers=False)
 headers = basic_headers.generate()
 
 # 生成多个不重复的请求头

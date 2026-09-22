@@ -45,7 +45,9 @@ class Headers(BaseGenerator):
     # 浏览器映射表
     __browser = {"chrome": chrome, "firefox": firefox, "opera": opera}
 
-    def __init__(self, browser: str = None, os: str = None, headers: bool = False):
+    def __init__(
+        self, browser: str | None = None, os: str | None = None, headers: bool = False
+    ):
         """
         初始化 HTTP 请求头生成器。
         

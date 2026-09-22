@@ -3,6 +3,11 @@ from random import randint as rint
 
 
 def make_header() -> dict:
+    """生成随机的额外 HTTP 请求头。
+
+    Returns:
+        包含可选请求头和 Referer 的字典。
+    """
     # 预定义可选头信息，避免重复的条件判断和字典更新
     optional_headers = [
         ("Accept-Encoding", "gzip, deflate, br"),
