@@ -9,10 +9,10 @@ headers - HTTP 请求头生成模块
 
 Example:
     >>> from funfake.headers import fake_header, Headers
-    >>> 
+    >>>
     >>> # 快速生成随机请求头
     >>> headers = fake_header()
-    >>> 
+    >>>
     >>> # 自定义浏览器和操作系统
     >>> gen = Headers(browser='chrome', os='win', headers=True)
     >>> headers = gen.generate()

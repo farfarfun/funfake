@@ -6,10 +6,10 @@ from typing import Any
 class BaseGenerator(ABC):
     """
     所有生成器的抽象基类。
-    
+
     所有具体的生成器类（如姓名生成器、手机号生成器、请求头生成器等）都应该继承此类，
     并实现 generate() 方法来定义具体的生成逻辑。
-    
+
     该基类提供了通用的 generate_many() 方法实现，用于批量生成不重复的结果。
     子类可以根据需要重写此方法以优化性能。
     """
@@ -18,7 +18,7 @@ class BaseGenerator(ABC):
     def generate(self) -> Any:
         """
         生成并返回单个结果。
-        
+
         这是一个抽象方法，子类必须实现此方法来定义具体的生成逻辑。
 
         Returns:
@@ -28,7 +28,7 @@ class BaseGenerator(ABC):
     def generate_many(self, count: int, allow_duplicates: bool = False) -> list[Any]:
         """
         批量生成多个结果（默认情况下不包含重复项）。
-        
+
         本方法提供了一个默认实现，通过循环调用 generate() 方法并去重来生成多个结果。
         子类可以根据自身特点重写此方法以提供更高效的批量生成实现。
 
@@ -44,7 +44,7 @@ class BaseGenerator(ABC):
         Raises:
             ValueError: 当 count 小于等于 0 时
             ValueError: 当 allow_duplicates=False 且无法生成足够的不重复结果时
-            
+
         Note:
             该方法最多尝试 count * 100 次生成，以避免在数据源有限时陷入无限循环。
         """
@@ -63,10 +63,7 @@ class BaseGenerator(ABC):
 
             # 对于可哈希类型（如字符串、数字），直接使用原值作为去重键
             # 对于不可哈希类型（如字典、列表），转换为字符串进行比较
-            if isinstance(result, (str, int, float, tuple)):
-                result_key = result
-            else:
-                result_key = str(result)
+            result_key = result if isinstance(result, (str, int, float, tuple)) else str(result)
 
             # 检查是否重复，如果不重复则添加到结果列表
             if result_key not in seen:
@@ -93,14 +90,14 @@ class BaseGenerator(ABC):
 class ListBasedGenerator(BaseGenerator):
     """
     基于固定列表的生成器基类。
-    
+
     该类为基于预定义数据列表的生成器提供了统一的实现框架，支持以下高级功能：
     - 概率权重：不同数据项或分组可以有不同的出现概率
     - 分组管理：数据可以按类别分组（如正派/反派、不同势力等）
     - 灵活配置：支持多种配置方式以满足不同场景需求
-    
+
     配置方式（子类需要定义以下类属性之一）：
-    
+
     1. NAMES: list[str]
        简单列表配置（向后兼容），所有项权重相等
        示例：NAMES = ["张三", "李四", "王五"]
@@ -113,7 +110,7 @@ class ListBasedGenerator(BaseGenerator):
        按组分组的配置，支持按类别管理数据
        示例：NAMES_BY_GROUP = {"正派": ["张三", "李四"], "反派": ["王五"]}
        可配合 GROUP_WEIGHTS 设置各组的权重
-    
+
     注意：
         - 子类只能定义上述配置方式之一，不能同时使用多种方式
         - 使用 NAMES_BY_GROUP 时，可以额外定义 GROUP_WEIGHTS 来设置组权重
@@ -140,10 +137,10 @@ class ListBasedGenerator(BaseGenerator):
     def _validate_config(self) -> None:
         """
         验证子类的配置是否有效。
-        
+
         确保子类只定义了一种配置方式（NAMES、NAMES_WITH_WEIGHTS 或 NAMES_BY_GROUP），
         避免配置冲突导致的不确定行为。
-        
+
         Raises:
             ValueError: 当子类未定义任何配置或定义了多种配置时
         """
@@ -153,13 +150,9 @@ class ListBasedGenerator(BaseGenerator):
 
         config_count = sum([has_names, has_weights, has_groups])
         if config_count == 0:
-            raise ValueError(
-                "Subclass must define at least one of: NAMES, NAMES_WITH_WEIGHTS, or NAMES_BY_GROUP"
-            )
+            raise ValueError("Subclass must define at least one of: NAMES, NAMES_WITH_WEIGHTS, or NAMES_BY_GROUP")
         if config_count > 1:
-            raise ValueError(
-                "Subclass should define only one of: NAMES, NAMES_WITH_WEIGHTS, or NAMES_BY_GROUP"
-            )
+            raise ValueError("Subclass should define only one of: NAMES, NAMES_WITH_WEIGHTS, or NAMES_BY_GROUP")
 
     def _get_available_names(self) -> list[str]:
         """
@@ -169,7 +162,7 @@ class ListBasedGenerator(BaseGenerator):
 
         Returns:
             list[str]: 可用的名字列表
-            
+
         Raises:
             ValueError: 当指定的分组不存在时
         """
@@ -177,9 +170,7 @@ class ListBasedGenerator(BaseGenerator):
             if self.group:
                 # 如果指定了分组，只返回该分组的名字
                 if self.group not in self.NAMES_BY_GROUP:
-                    raise ValueError(
-                        f"Group '{self.group}' not found in NAMES_BY_GROUP"
-                    )
+                    raise ValueError(f"Group '{self.group}' not found in NAMES_BY_GROUP")
                 return self.NAMES_BY_GROUP[self.group]
             else:
                 # 未指定分组时，返回所有分组的名字（合并）
@@ -202,10 +193,10 @@ class ListBasedGenerator(BaseGenerator):
 
         Returns:
             list[tuple[str, float]]: 名字和对应权重的元组列表，格式为 [(name1, weight1), (name2, weight2), ...]
-            
+
         Raises:
             ValueError: 当指定的分组不存在时
-            
+
         Note:
             - 对于 NAMES 配置，所有名字的权重默认为 1.0
             - 对于 NAMES_BY_GROUP 配置，使用 GROUP_WEIGHTS 中定义的组权重（默认为 1.0）
@@ -216,11 +207,7 @@ class ListBasedGenerator(BaseGenerator):
                 # 如果指定了分组，需要从 NAMES_BY_GROUP 中筛选对应的名字
                 if self.NAMES_BY_GROUP and self.group in self.NAMES_BY_GROUP:
                     group_names = set(self.NAMES_BY_GROUP[self.group])
-                    return [
-                        (name, weight)
-                        for name, weight in self.NAMES_WITH_WEIGHTS
-                        if name in group_names
-                    ]
+                    return [(name, weight) for name, weight in self.NAMES_WITH_WEIGHTS if name in group_names]
                 else:
                     # 如果没有分组信息，返回所有带权重的名字
                     return self.NAMES_WITH_WEIGHTS
@@ -231,9 +218,7 @@ class ListBasedGenerator(BaseGenerator):
             if self.group:
                 # 如果指定了分组，只返回该分组的名字（使用该分组的权重）
                 if self.group not in self.NAMES_BY_GROUP:
-                    raise ValueError(
-                        f"Group '{self.group}' not found in NAMES_BY_GROUP"
-                    )
+                    raise ValueError(f"Group '{self.group}' not found in NAMES_BY_GROUP")
                 group_weight = self.GROUP_WEIGHTS.get(self.group, 1.0)
                 for name in self.NAMES_BY_GROUP[self.group]:
                     weighted.append((name, group_weight))
@@ -251,7 +236,7 @@ class ListBasedGenerator(BaseGenerator):
     def generate(self, group: str | None = None) -> str:
         """
         从列表中按权重随机选择一个名字。
-        
+
         该方法支持分组和概率权重，可以在运行时临时指定分组。
 
         Args:
@@ -261,7 +246,7 @@ class ListBasedGenerator(BaseGenerator):
 
         Returns:
             str: 随机选择的名字
-            
+
         Raises:
             ValueError: 当没有可用的名字时（例如分组为空）
             ValueError: 当指定的分组不存在时
@@ -277,18 +262,16 @@ class ListBasedGenerator(BaseGenerator):
                 raise ValueError("No names available for generation.")
 
             # 使用权重进行加权随机选择
-            names, weights = zip(*weighted_names)
+            names, weights = zip(*weighted_names, strict=True)
             return random.choices(names, weights=weights, k=1)[0]
         finally:
             # 恢复原始分组设置
             self.group = original_group
 
-    def generate_many(
-        self, count: int, allow_duplicates: bool = False, group: str | None = None
-    ) -> list[str]:
+    def generate_many(self, count: int, allow_duplicates: bool = False, group: str | None = None) -> list[str]:
         """
         批量生成多个名字（支持去重和权重）。
-        
+
         该方法提供了优化的批量生成实现，支持权重选择和去重控制。
 
         Args:
@@ -307,7 +290,7 @@ class ListBasedGenerator(BaseGenerator):
             ValueError: 当 count 小于等于 0 时
             ValueError: 当 allow_duplicates=False 且可用的不重复名字数量少于 count 时
             ValueError: 当指定的分组不存在时
-            
+
         Note:
             - 当 allow_duplicates=False 时，结果数量受限于可用的不重复名字数量
             - 当 allow_duplicates=True 时，使用加权随机选择，可能会出现重复
@@ -340,13 +323,10 @@ class ListBasedGenerator(BaseGenerator):
                     # 去重并保留最大权重（同一名字可能在不同分组中有不同权重）
                     unique_weighted = {}
                     for name, weight in weighted_names:
-                        if (
-                            name not in unique_weighted
-                            or weight > unique_weighted[name]
-                        ):
+                        if name not in unique_weighted or weight > unique_weighted[name]:
                             unique_weighted[name] = weight
                     unique_weighted_list = list(unique_weighted.items())
-                    unique_names_list, unique_weights = zip(*unique_weighted_list)
+                    unique_names_list, unique_weights = zip(*unique_weighted_list, strict=True)
 
                     # 使用权重进行加权随机选择（不重复）
                     results = []
@@ -356,9 +336,7 @@ class ListBasedGenerator(BaseGenerator):
 
                     while len(results) < count and available_names:
                         # 按权重随机选择一个名字
-                        selected = random.choices(
-                            available_names, weights=available_weights, k=1
-                        )[0]
+                        selected = random.choices(available_names, weights=available_weights, k=1)[0]
                         results.append(selected)
                         seen.add(selected)
 
@@ -375,7 +353,7 @@ class ListBasedGenerator(BaseGenerator):
                 # 可用名字不足但允许重复，使用权重生成（可能包含重复）
                 weighted_names = self._get_weighted_names()
                 if weighted_names:
-                    names, weights = zip(*weighted_names)
+                    names, weights = zip(*weighted_names, strict=True)
                     return random.choices(list(names), weights=list(weights), k=count)
                 else:
                     # 无权重信息时，从不重复的名字中随机重复选择
@@ -396,7 +374,7 @@ class ListBasedGenerator(BaseGenerator):
 
         Returns:
             list[str]: 分组名称列表，如果未使用分组配置则返回空列表
-            
+
         Example:
             >>> water_margin = WaterMarginName()
             >>> groups = water_margin.get_groups()

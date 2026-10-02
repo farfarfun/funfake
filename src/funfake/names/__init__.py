@@ -12,10 +12,10 @@ names - 姓名生成模块
 
 Example:
     >>> from funfake.names import fake_name, WaterMarginName
-    >>> 
+    >>>
     >>> # 快速生成随机姓名
     >>> name = fake_name('chinese')
-    >>> 
+    >>>
     >>> # 生成水浒传人物姓名
     >>> gen = WaterMarginName()
     >>> name = gen.generate(group="正派")
@@ -33,12 +33,12 @@ from .scenarios import (
 
 __all__ = [
     "ChineseName",
-    "EnglishName",
-    "WaterMarginName",
-    "JourneyToWestName",
     "DreamOfRedChamberName",
-    "RomanceOfThreeKingdomsName",
+    "EnglishName",
     "InvestitureOfGodsName",
     "JinYongWuxiaName",
+    "JourneyToWestName",
+    "RomanceOfThreeKingdomsName",
+    "WaterMarginName",
     "fake_name",
 ]

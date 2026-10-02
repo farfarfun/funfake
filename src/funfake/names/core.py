@@ -15,24 +15,24 @@ from ..base import BaseGenerator
 class ChineseName(BaseGenerator):
     """
     中文姓名生成器。
-    
+
     基于常见的中文姓氏和名字组合生成随机中文姓名。
     支持单字名和双字名，可以自定义双字名的出现概率。
-    
+
     Args:
         double_name_probability: 生成双字名的概率，范围 0.0-1.0，默认 0.3（30%）
                                 例如：0.5 表示 50% 的概率生成双字名
-    
+
     Attributes:
         SURNAMES: 100+ 个常见中文姓氏（如王、李、张等）
         GIVEN_NAMES_SINGLE: 80+ 个常见单字名（如伟、芳、娜等）
         GIVEN_NAMES_DOUBLE: 70+ 个常见双字名（如志强、文博等）
-        
+
     Example:
         >>> gen = ChineseName()
         >>> name = gen.generate()
         >>> print(name)  # 例如：王伟、李志强
-        
+
         >>> # 设置更高的双字名概率
         >>> gen = ChineseName(double_name_probability=0.7)
         >>> name = gen.generate()  # 70% 的概率生成双字名
@@ -305,12 +305,12 @@ class ChineseName(BaseGenerator):
     def generate(self) -> str:
         """
         生成一个随机的中文姓名。
-        
+
         根据设定的概率随机选择单字名或双字名，与随机选择的姓氏组合。
 
         Returns:
             str: 生成的中文姓名，格式为"姓+名"（如"王伟"、"李志强"）
-            
+
         Example:
             >>> gen = ChineseName()
             >>> name = gen.generate()
@@ -331,13 +331,13 @@ class ChineseName(BaseGenerator):
 class EnglishName(BaseGenerator):
     """
     英文姓名生成器。
-    
+
     基于常见的英文名字和姓氏组合生成随机英文姓名。
-    
+
     Attributes:
         FIRST_NAMES: 200+ 个常见英文名字（如 James、Mary、John 等）
         LAST_NAMES: 400+ 个常见英文姓氏（如 Smith、Johnson、Williams 等）
-        
+
     Example:
         >>> gen = EnglishName()
         >>> name = gen.generate()
@@ -1067,12 +1067,12 @@ class EnglishName(BaseGenerator):
     def generate(self) -> str:
         """
         生成一个随机的英文姓名。
-        
+
         按照英文姓名习惯，格式为"名字 + 姓氏"（First Name + Last Name）。
 
         Returns:
             str: 生成的英文姓名，格式为"名字 姓氏"（如 "John Smith"）
-            
+
         Example:
             >>> gen = EnglishName()
             >>> name = gen.generate()
@@ -1092,7 +1092,7 @@ __english_name = EnglishName()
 def fake_name(language: str | None = None) -> str:
     """
     快速生成随机姓名。
-    
+
     这是一个便捷函数，可以快速生成中文或英文姓名。
 
     Args:
@@ -1103,18 +1103,18 @@ def fake_name(language: str | None = None) -> str:
 
     Returns:
         str: 生成的姓名（中文或英文）
-        
+
     Example:
         >>> from funfake import fake_name
-        >>> 
+        >>>
         >>> # 生成中文姓名
         >>> name = fake_name('chinese')
         >>> print(name)  # 王伟
-        >>> 
+        >>>
         >>> # 生成英文姓名
         >>> name = fake_name('english')
         >>> print(name)  # John Smith
-        >>> 
+        >>>
         >>> # 随机生成
         >>> name = fake_name()  # 可能是中文或英文
     """

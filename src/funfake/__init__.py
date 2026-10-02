@@ -11,13 +11,13 @@ funfake - 轻量级的 Python 伪造数据生成库
 
 快速开始：
     >>> from funfake import fake_header, fake_name, fake_phone
-    >>> 
+    >>>
     >>> # 生成 HTTP 请求头
     >>> headers = fake_header()
-    >>> 
+    >>>
     >>> # 生成随机姓名
     >>> name = fake_name()
-    >>> 
+    >>>
     >>> # 生成随机手机号
     >>> phone = fake_phone()
 
@@ -41,19 +41,19 @@ from .phones import ChinesePhone, EnglishPhone, fake_phone
 
 __all__ = [
     "BaseGenerator",
-    "ListBasedGenerator",
-    "fake_header",
-    "Headers",
     "ChineseName",
-    "EnglishName",
-    "WaterMarginName",
-    "JourneyToWestName",
+    "ChinesePhone",
     "DreamOfRedChamberName",
-    "RomanceOfThreeKingdomsName",
+    "EnglishName",
+    "EnglishPhone",
+    "Headers",
     "InvestitureOfGodsName",
     "JinYongWuxiaName",
+    "JourneyToWestName",
+    "ListBasedGenerator",
+    "RomanceOfThreeKingdomsName",
+    "WaterMarginName",
+    "fake_header",
     "fake_name",
-    "ChinesePhone",
-    "EnglishPhone",
     "fake_phone",
 ]

@@ -11,10 +11,10 @@ phones - 手机号码生成模块
 
 Example:
     >>> from funfake.phones import fake_phone, ChinesePhone
-    >>> 
+    >>>
     >>> # 快速生成随机手机号
     >>> phone = fake_phone('chinese')
-    >>> 
+    >>>
     >>> # 生成指定运营商的手机号
     >>> gen = ChinesePhone()
     >>> phone = gen.generate(operator="移动")

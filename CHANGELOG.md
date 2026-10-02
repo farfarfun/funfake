@@ -27,6 +27,10 @@
 - 新增根目录 `CHANGELOG.md`。
 - 补充 `tests/test_smoke.py` 对公开 API 边界/非法参数场景的覆盖：`fake_name`/`fake_phone`
   非法参数、`Headers.empty()`、`headers.headers.make_header()`。
+- `[dependency-groups].dev` 补充 `ruff>=0.16`，并新增 `[tool.ruff]`/`[tool.ruff.lint]`
+  配置（`line-length = 120` 以容纳真实浏览器 UA 示例字符串、排除 `*.md` 以保留 README
+  代码示例的对齐排版、忽略中文注释触发的 `RUF001-003` 与常量数据类属性触发的
+  `RUF012`），使 `ruff check .` / `ruff format --check .` 可正常运行。
 
 ### 修复
 
@@ -35,6 +39,11 @@
 - `pyproject.toml` 补充 `[project] license = "MIT"` 声明，并将
   `[tool.setuptools] license-files` 指向 `LICENSE`。
 - 补充并提交 `uv.lock`，保证可复现构建。
+- 接入 Ruff 后修复了既有的真实 lint 问题：移除 `headers/browsers.py` 中未使用的
+  `randint as rint` 导入、为 `base.py` 中 3 处 `zip(*weighted_names)` 补充
+  `strict=True`（解包同长度的 `(name, weight)` 元组列表，显式声明长度不变式）、
+  将一处 `if/else` 赋值简化为三元表达式，并对全部源码跑了 `ruff format .`
+  （仅限 `.py` 文件，`*.md` 已排除）。
 
 ### 变更
 

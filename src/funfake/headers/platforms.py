@@ -15,10 +15,10 @@ from random import randint as rint
 def windows() -> str:
     """
     生成 Windows 操作系统的平台信息字符串。
-    
+
     Returns:
         str: Windows 平台信息，格式如 "Windows NT 10.0; Win64; x64" 或 "Windows NT 6.1"
-        
+
     Example:
         >>> platform = windows()
         >>> print(platform)
@@ -40,10 +40,10 @@ def windows() -> str:
 def macos() -> str:
     """
     生成 macOS 操作系统的平台信息字符串。
-    
+
     Returns:
         str: macOS 平台信息，格式如 "Macintosh; Intel Mac OS X 10_14_2"
-        
+
     Example:
         >>> platform = macos()
         >>> print(platform)
@@ -61,10 +61,10 @@ def macos() -> str:
 def linux() -> str:
     """
     生成 Linux 操作系统的平台信息字符串。
-    
+
     Returns:
         str: Linux 平台信息，格式如 "X11; Linux x86_64"
-        
+
     Example:
         >>> platform = linux()
         >>> print(platform)
@@ -79,12 +79,12 @@ def linux() -> str:
 def random_os() -> str:
     """
     随机选择一个操作系统并生成其平台信息字符串。
-    
+
     从 Windows、macOS、Linux 中随机选择一个操作系统。
-    
+
     Returns:
         str: 随机操作系统的平台信息
-        
+
     Example:
         >>> platform = random_os()
         >>> # 可能返回 Windows、macOS 或 Linux 的平台信息

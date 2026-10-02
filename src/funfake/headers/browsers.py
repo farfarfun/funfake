@@ -11,8 +11,6 @@
 """
 
 import random
-from random import randint as rint
-
 
 # Chrome 浏览器版本列表（66个版本，范围从 60.0 到 87.0）
 chrome_ver = [
@@ -88,10 +86,10 @@ chrome_ver = [
 def firefox() -> str:
     """
     生成 Firefox 浏览器的 User-Agent 字符串。
-    
+
     Returns:
         str: Firefox User-Agent 字符串，包含 %PLAT% 占位符需要替换为平台信息
-        
+
     Example:
         >>> ua = firefox()
         >>> print(ua.replace("%PLAT%", "Windows NT 10.0; Win64; x64"))
@@ -243,10 +241,10 @@ def firefox() -> str:
 def chrome() -> str:
     """
     生成 Chrome 浏览器的 User-Agent 字符串。
-    
+
     Returns:
         str: Chrome User-Agent 字符串，包含 %PLAT% 占位符需要替换为平台信息
-        
+
     Example:
         >>> ua = chrome()
         >>> print(ua.replace("%PLAT%", "Windows NT 10.0; Win64; x64"))
@@ -259,16 +257,17 @@ def chrome() -> str:
 def opera() -> str:
     """
     生成 Opera 浏览器的 User-Agent 字符串。
-    
+
     Opera 基于 Chromium，因此 User-Agent 同时包含 Chrome 和 Opera 的版本号。
-    
+
     Returns:
         str: Opera User-Agent 字符串，包含 %PLAT% 占位符需要替换为平台信息
-        
+
     Example:
         >>> ua = opera()
         >>> print(ua.replace("%PLAT%", "Windows NT 10.0; Win64; x64"))
-        Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36 OPR/54.0.2952.64
+        Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)
+        Chrome/67.0.3396.87 Safari/537.36 OPR/54.0.2952.64
     """
     response = "Mozilla/5.0 (%PLAT%) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%CVER% Safari/537.36 OPR/%OVER%"
 
@@ -329,12 +328,12 @@ def opera() -> str:
 def random_browser() -> str:
     """
     随机选择一个浏览器并生成其 User-Agent 字符串。
-    
+
     从 Chrome、Firefox、Opera 中随机选择一个浏览器。
-    
+
     Returns:
         str: 随机浏览器的 User-Agent 字符串，包含 %PLAT% 占位符需要替换为平台信息
-        
+
     Example:
         >>> ua = random_browser()
         >>> # 可能返回 Chrome、Firefox 或 Opera 的 User-Agent
