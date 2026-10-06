@@ -170,6 +170,9 @@ Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67
 ### 添加新浏览器
 
 ```python
+import random
+
+
 def new_browser() -> str:
     versions = ["1.0", "2.0", "3.0"]
     template = "NewBrowser/%VER%"

@@ -2,24 +2,6 @@
 
 本文件记录 funfake 的版本变更，按版本倒序排列。
 
-## [1.1.6]
-
-### 新增
-
-- 无。
-
-### 修复
-
-- 修正 README 中 Linux 平台参数示例，并补充请求头 API 文档。
-
-### 变更
-
-- 无。
-
-### 废弃
-
-- 无。
-
 ## [未发布]
 
 ### 新增
@@ -38,7 +20,7 @@
   `requires-python = ">=3.10"` 保持一致。
 - `pyproject.toml` 补充 `[project] license = "MIT"` 声明，并将
   `[tool.setuptools] license-files` 指向 `LICENSE`。
-- 补充并提交 `uv.lock`，保证可复现构建。
+- 停止跟踪 `uv.lock`；作为库项目，不在版本控制中维护该锁文件。
 - 接入 Ruff 后修复了既有的真实 lint 问题：移除 `headers/browsers.py` 中未使用的
   `randint as rint` 导入、为 `base.py` 中 3 处 `zip(*weighted_names)` 补充
   `strict=True`（解包同长度的 `(name, weight)` 元组列表，显式声明长度不变式）、
@@ -52,6 +34,24 @@
   改为 Python 3.10 原生写法（`X | None`、`list[...]`、`dict[...]`、`tuple[...]`）。
 - README 末尾追加组织统一介绍区块。
 - `.gitignore` 补充 `*.db`、`*.rar`、`.run/`、`logs/`、`.vscode/`。
+
+### 废弃
+
+- 无。
+
+## [1.1.6]
+
+### 新增
+
+- 无。
+
+### 修复
+
+- 修正 README 中 Linux 平台参数示例，并补充请求头 API 文档。
+
+### 变更
+
+- 无。
 
 ### 废弃
 
