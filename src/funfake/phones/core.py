@@ -199,6 +199,41 @@ class ChinesePhone(BaseGenerator):
         finally:
             self.operator = original_operator
 
+    def generate_many(self, count: int, allow_duplicates: bool = False, operator: str | None = None) -> list[str]:
+        """
+        批量生成多个中国手机号码（默认情况下不包含重复项）。
+
+        Args:
+            count: 要生成的数量，必须为正整数
+            allow_duplicates: 是否允许结果重复，默认为 False
+            operator: 临时指定运营商类型，会覆盖初始化时的设置
+                     - '移动'/'联通'/'电信': 只生成对应运营商的号码
+                     - None: 使用初始化时的设置（默认）
+
+        Returns:
+            list[str]: 生成的 11 位手机号码列表，默认不包含重复项
+
+        Raises:
+            ValueError: 当 count 小于等于 0 时
+            ValueError: 当 allow_duplicates=False 且无法生成足够的不重复号码时
+            ValueError: 当指定的运营商不存在时
+
+        Example:
+            >>> gen = ChinesePhone()
+            >>> phones = gen.generate_many(3, operator="移动")
+            >>> len(phones)
+            3
+        """
+        # 临时使用指定的运营商（保存原始设置以便恢复）
+        original_operator = self.operator
+        try:
+            if operator is not None:
+                self.operator = operator
+
+            return super().generate_many(count, allow_duplicates=allow_duplicates)
+        finally:
+            self.operator = original_operator
+
     def get_operators(self) -> list[str]:
         """
         获取所有可用的运营商列表。
@@ -665,6 +700,43 @@ class EnglishPhone(BaseGenerator):
             return f"{area_code}-{exchange}-{number}"
         else:
             return f"{area_code}{exchange}{number}"
+
+    def generate_many(
+        self, count: int, allow_duplicates: bool = False, format_with_dash: bool | None = None
+    ) -> list[str]:
+        """
+        批量生成多个美国手机号码（默认情况下不包含重复项）。
+
+        Args:
+            count: 要生成的数量，必须为正整数
+            allow_duplicates: 是否允许结果重复，默认为 False
+            format_with_dash: 临时指定是否使用连字符格式，会覆盖初始化时的设置
+                            - True: 使用连字符格式 XXX-XXX-XXXX
+                            - False: 不使用连字符格式 XXXXXXXXXX
+                            - None: 使用初始化时的设置（默认）
+
+        Returns:
+            list[str]: 生成的手机号码列表，默认不包含重复项
+
+        Raises:
+            ValueError: 当 count 小于等于 0 时
+            ValueError: 当 allow_duplicates=False 且无法生成足够的不重复号码时
+
+        Example:
+            >>> gen = EnglishPhone()
+            >>> phones = gen.generate_many(3, format_with_dash=False)
+            >>> all("-" not in phone for phone in phones)
+            True
+        """
+        # 临时使用指定的格式（保存原始设置以便恢复）
+        original_format_with_dash = self.format_with_dash
+        try:
+            if format_with_dash is not None:
+                self.format_with_dash = format_with_dash
+
+            return super().generate_many(count, allow_duplicates=allow_duplicates)
+        finally:
+            self.format_with_dash = original_format_with_dash
 
 
 # 全局单例，用于快速生成手机号
