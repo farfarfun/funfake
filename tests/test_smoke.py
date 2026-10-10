@@ -254,6 +254,44 @@ def test_english_phone_generator(format_with_dash):
         assert phone.isdigit()
 
 
+@pytest.mark.parametrize("operator", ["移动", "联通", "电信"])
+def test_chinese_phone_generate_many_by_operator(operator):
+    from funfake.phones import ChinesePhone
+
+    gen = ChinesePhone()
+    phones = gen.generate_many(10, operator=operator)
+    assert len(phones) == 10
+    assert len(set(phones)) == 10
+    assert all(phone[:3] in gen.OPERATOR_GROUPS[operator] for phone in phones)
+    # 临时指定的运营商不应污染实例的初始设置
+    assert gen.operator is None
+
+
+def test_chinese_phone_generate_many_invalid_operator_raises():
+    from funfake.phones import ChinesePhone
+
+    gen = ChinesePhone()
+    with pytest.raises(ValueError):
+        gen.generate_many(3, operator="不存在的运营商")
+
+
+@pytest.mark.parametrize("format_with_dash", [True, False])
+def test_english_phone_generate_many_by_format(format_with_dash):
+    from funfake.phones import EnglishPhone
+
+    # 实例默认与临时指定的格式相反，用于验证临时参数确实生效
+    gen = EnglishPhone(format_with_dash=not format_with_dash)
+    phones = gen.generate_many(10, format_with_dash=format_with_dash)
+    assert len(phones) == 10
+    assert len(set(phones)) == 10
+    if format_with_dash:
+        assert all(phone.count("-") == 2 for phone in phones)
+    else:
+        assert all(phone.isdigit() for phone in phones)
+    # 临时指定的格式不应污染实例的初始设置
+    assert gen.format_with_dash is (not format_with_dash)
+
+
 # ---------------------------------------------------------------------------
 # 6. base 模块（抽象基类 / 通用批量生成逻辑）
 # ---------------------------------------------------------------------------

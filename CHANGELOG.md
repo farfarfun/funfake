@@ -16,6 +16,11 @@
 
 ### 修复
 
+- `ChinesePhone.generate_many()` 补充 `operator` 参数、`EnglishPhone.generate_many()`
+  补充 `format_with_dash` 参数（沿用 `ListBasedGenerator.generate_many(group=...)` 的
+  临时覆盖再恢复的实现方式）。此前两者直接继承 `BaseGenerator.generate_many()`，
+  README 中记录并示例的 `generate_many(10, operator="移动")` 实际会抛
+  `TypeError: unexpected keyword argument`。
 - README 的 Python 版本徽章由 `3.8+` 更正为 `3.10+`，与 `pyproject.toml` 的
   `requires-python = ">=3.10"` 保持一致。
 - `pyproject.toml` 补充 `[project] license = "MIT"` 声明，并将
