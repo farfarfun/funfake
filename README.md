@@ -1,7 +1,7 @@
 # funfake
 
 [![PyPI version](https://badge.fury.io/py/funfake.svg)](https://badge.fury.io/py/funfake)
-[![Python](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Python](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 一个轻量级的Python库，用于生成真实的HTTP请求头、各类姓名和手机号码，帮助模拟各种浏览器、操作系统和用户身份。
